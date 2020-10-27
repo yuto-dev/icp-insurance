@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int sub(), fraud(), doxx(), google();
+int subReg(), insClaim(), accInfo(), searchFunc();
 void menu(), exitMenu();
 
 int main(){
@@ -9,27 +9,27 @@ int main(){
 }
 
 void menu(){
-    int option;
+    char option[10];
     printf("1. Insurance Plan Subscription\n");
     printf("2. Insurance Fraud\n");
     printf("3. Accounts Information\n");
     printf("4. Search\n");
     printf("5. Exit\n");
     printf("Choose option: ");
-    scanf("%d", &option);
-    if (option == 1){
-        sub();
+    scanf("%c", &option);
+    if (option == "1"){
+        subReg();
     }
-    else if (option == 2){
-        fraud();
+    else if (option == "2"){
+        insClaim();
     }
-    else if (option == 3){
-        doxx();
+    else if (option == "3"){
+        accInfo();
     }
-    else if (option == 4){
-        google();
+    else if (option == "4"){
+        searchFunc();
     }
-    else if (option == 5){
+    else if (option == "5"){
         exitMenu();
     }
     else{
@@ -38,23 +38,23 @@ void menu(){
     }
 }
 
-int sub(){
+int subReg(){
     int placeholder;
     printf("a\n");
     exitMenu();
 }
 
-int fraud(){
+int insClaim(){
     printf("b\n");
     exitMenu();
 }
 
-int doxx(){
+int accInfo(){
     printf("c\n");
     exitMenu();
 }
 
-int google(){
+int searchFunc(){
     printf("d\n");
     exitMenu();
 }
