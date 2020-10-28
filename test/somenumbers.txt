@@ -1,0 +1,1 @@
+John;17;Street;Kuala Lumpur;100000;0;150;

@@ -1,0 +1,5 @@
+1;reimu;18;100
+2;crispy;18;150
+3;marisa;18;200
+4;byakuren;200;200
+5;seiba;21;100
