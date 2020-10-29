@@ -5,10 +5,9 @@ int main(){
     FILE *f = fopen("file.txt", "a");
     FILE *idgen = fopen("id.txt", "r");
     
-    //if (f == NULL){
-    //printf("Error opening file!\n");
-    //exit(1);
-    //}
+    if (f == NULL){
+    printf("Error opening file!\n");
+    }
 
     int placeholder, age, plan, id, nextid;
     char name[20], customer[128];
@@ -49,7 +48,6 @@ int main(){
     printf("%d\n", nextid);
     printf("--------------\n");
     fprintf(f, "%d;%s;%d;%d\n", nextid,name, age, plan);
-    //fprintf(idgen, "%d", nextid);
     fclose(f);
     fclose(idgen);
 
@@ -57,6 +55,6 @@ int main(){
     fprintf(idwrite, "%d", nextid);
     fclose(idwrite);
 
-    //scanf("%d", &placeholder);
+    
     return 0;
 }
