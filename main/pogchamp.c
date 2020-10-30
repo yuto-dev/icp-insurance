@@ -486,10 +486,20 @@ void insClaim(){
         fclose(overlimitAppend);
     }
 
+    int nextclaim;
     if (type == 2){
         FILE *lifeclaimAppend = fopen("lifeclaim.txt", "a");
         fprintf(lifeclaimAppend, "%d\n", sum);
         fclose(lifeclaimAppend);
+
+        FILE *fnextclaim = fopen("nextclaim.txt", "r");
+        fscanf(fnextclaim,"%d", &nextclaim);
+        nextclaim = nextclaim + 1;
+        fclose(fnextclaim);
+
+        FILE *fnextclaimwrite = fopen("nextid.txt", "w");
+        fprintf(fnextclaimwrite, "%d", nextclaim);
+        fclose(fnextclaimwrite);
     }
     returnToMenu();
 }
