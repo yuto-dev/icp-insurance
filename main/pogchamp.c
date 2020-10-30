@@ -41,19 +41,12 @@ void menu(){
 }
 
 void subReg(){
-    FILE *fage = fopen("age.txt", "a");
-    FILE *fclaim = fopen("claim.txt", "a");
-    FILE *fclimit = fopen("climit.txt", "a");
-    FILE *fid = fopen("id.txt", "a");
-    FILE *fname = fopen("name.txt", "a");
-    FILE *fplan = fopen("plan.txt", "a");
-    FILE *ftype = fopen("type.txt", "a");
 
     FILE *idgen = fopen("nextid.txt", "r");
 
     int claim = 0;
-    int age, plan, id, nextid, type;
-    char name[20], customer[128];
+    int age, plan, id, nextid, type, climit;
+    char name[32];
 
     int placeholder;
 
@@ -90,7 +83,7 @@ void subReg(){
             menu();
         }
     }
-    scanf("$d", placeholder);
+    //scanf("$d", placeholder);
 
     if ( 0 < age && age < 21) {
         if (type == 1){
@@ -197,14 +190,67 @@ void subReg(){
         }
     }
 
-    // UNCOMMENT LATER
-    //fprintf(fid, "%d\n", nextid);
-    //fclose(fid);
-    //fclose(idgen);
+    if (type == 1){
+        if (plan == 1){
+            climit = 120000;
+        }
+        else if (plan == 2){
+            climit = 150000;
+        }
+        else if (plan == 3){
+            climit = 200000;
+        }
+        else {
+            printf("Wrong input, returning to main menu..\n");
+            menu();
+        }
+    }
+    else if (type == 2){
+        if (plan == 1){
+            climit = 600000;
+        }
+        else if (plan == 2){
+            climit = 750000;
+        }
+        else if (plan == 3){
+            climit = 1000000;
+        }
+        else {
+            printf("Wrong input, returning to main menu..\n");
+            menu();
+        }
+    }
 
-    //FILE *idwrite = fopen("nextid.txt", "w");
-    //fprintf(idwrite, "%d", nextid);
-    //fclose(idwrite);
+    // UNCOMMENT LATER
+    FILE *fage = fopen("age.txt", "a");
+    FILE *fclaim = fopen("claim.txt", "a");
+    FILE *fclimit = fopen("climit.txt", "a");
+    FILE *fid = fopen("id.txt", "a");
+    FILE *fname = fopen("name.txt", "a");
+    FILE *fplan = fopen("plan.txt", "a");
+    FILE *ftype = fopen("type.txt", "a");
+
+    fprintf(fage, "%d\n", age);
+    fprintf(fclaim, "%d\n", claim);
+    fprintf(fclimit, "%d\n", climit);
+    fprintf(fid, "%d\n", nextid);
+    fprintf(fname, "%s\n", name);
+    fprintf(fplan, "%d\n", plan);
+    fprintf(ftype, "%d\n", type);
+
+    fclose(fage);
+    fclose(fclaim);
+    fclose(fclimit);
+    fclose(fid);
+    fclose(fname);
+    fclose(fplan);
+    fclose(ftype);
+
+    fclose(idgen);
+
+    FILE *idwrite = fopen("nextid.txt", "w");
+    fprintf(idwrite, "%d", nextid);
+    fclose(idwrite);
 
     returnToMenu();
 
