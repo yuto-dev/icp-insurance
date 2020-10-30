@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-int  insClaim(), accInfo(), searchFunc();
-void menu(), exitMenu(), subReg(), returnToMenu();
+int searchFunc(), exitMenu();
+void menu(), accInfo(), accInfoA(), accInfoB(), subReg(), returnToMenu(), insClaim();
 
 int main(){
     menu();
@@ -13,7 +14,7 @@ void menu(){
     int option;
     printf("------------------------------\n");
     printf("1. Insurance Plan Subscription\n");
-    printf("2. Insurance Fraud\n");
+    printf("2. Insurance Claim\n");
     printf("3. Accounts Information\n");
     printf("4. Search\n");
     printf("5. Exit\n");
@@ -45,7 +46,7 @@ void subReg(){
     FILE *idgen = fopen("nextid.txt", "r");
 
     int claim = 0;
-    int age, plan, id, nextid, type, climit;
+    int age, plan, id, nextid, type, climit, claimable;
     char name[32];
 
     int placeholder;
@@ -83,7 +84,6 @@ void subReg(){
             menu();
         }
     }
-    //scanf("$d", placeholder);
 
     if ( 0 < age && age < 21) {
         if (type == 1){
@@ -221,9 +221,12 @@ void subReg(){
         }
     }
 
+    claimable = climit;
+
     // UNCOMMENT LATER
     FILE *fage = fopen("age.txt", "a");
     FILE *fclaim = fopen("claim.txt", "a");
+    FILE *fclaimable = fopen("claimable.txt", "a");
     FILE *fclimit = fopen("climit.txt", "a");
     FILE *fid = fopen("id.txt", "a");
     FILE *fname = fopen("name.txt", "a");
@@ -232,6 +235,7 @@ void subReg(){
 
     fprintf(fage, "%d\n", age);
     fprintf(fclaim, "%d\n", claim);
+    fprintf(fclaimable, "%d\n", claimable);
     fprintf(fclimit, "%d\n", climit);
     fprintf(fid, "%d\n", nextid);
     fprintf(fname, "%s\n", name);
@@ -240,6 +244,7 @@ void subReg(){
 
     fclose(fage);
     fclose(fclaim);
+    fclose(fclaimable);
     fclose(fclimit);
     fclose(fid);
     fclose(fname);
@@ -256,14 +261,113 @@ void subReg(){
 
 }
 
-int insClaim(){
-    printf("b\n");
-    exitMenu();
+void insClaim(){
+
+    FILE *fidlimit = fopen("nextid.txt", "r");
+    
+
+    int x, id, idlimit, limit, placeholder, count;
+    int sum = 0;
+    int lineNumber;
+    
+
+    char name[32];
+    int claimable, type, plan;
+
+    printf("Enter ID: ");
+    scanf("%d", &x);
+    lineNumber = x - 1;
+    fscanf(fidlimit,"%d", &idlimit);
+    limit = idlimit;
+
+    // Check whether the entered ID is valid or not.
+    if (x < 0 || x > idlimit){
+        printf("ID not found, returning to main menu..\n");
+        menu();
+    }
+    
+    // Declare crawling variables
+    char cLine[32];
+    int iLine;
+
+    count = 0;
+    FILE *fname = fopen("name.txt", "r");
+    while (count < limit){
+        fscanf(fname, "%s", &cLine);
+        if (count == lineNumber){
+            strcpy(name,cLine);
+        }
+        count++;
+    }
+    fclose(fname);
+    
+    count = 0;
+    int claimableHolder[limit];
+    FILE *fclaimable = fopen("claimable.txt", "r");
+    while (count < limit){
+        fscanf(fclaimable, "%d", &iLine);
+        if (count == lineNumber){
+            claimable = iLine;
+        }
+        claimableHolder[count] = iLine;
+        count++;
+    }
+
+    count = 0;
+    FILE *ftype = fopen("type.txt", "r");
+    while (count < limit){
+        fscanf(ftype, "%d", &iLine);
+        if (count == lineNumber){
+            type = iLine;
+        }
+        count++;
+    }
+
+    count = 0;
+    FILE *fplan = fopen("plan.txt", "r");
+    while (count < limit){
+        fscanf(fplan, "%d", &iLine);
+        if (count == lineNumber){
+            plan = iLine;
+        }
+        count++;
+    }
+
+    returnToMenu();
 }
 
-int accInfo(){
-    printf("c\n");
-    exitMenu();
+void accInfo(){
+    accInfoA();
+    accInfoB();
+    returnToMenu();
+}
+
+void accInfoA(){
+    FILE *flimit = fopen("nextid.txt", "r");
+    int limit;
+    int sum = 0;
+    int placeholder;
+
+    fscanf(flimit,"%d", &limit);
+
+    FILE *file = fopen("claim.txt", "r");
+    int count = 0;
+    if ( file != NULL ){
+        int line; /* or other suitable maximum line size */
+        while (count < limit) /* read a line */    
+        {
+            fscanf(file, "%d", &line);
+            sum = sum + line;
+            count++;
+        }
+        printf("%d\n", sum);
+        fclose(flimit);
+        fclose(file);
+    }
+}
+
+void accInfoB(){
+    printf("accInfoB\n");
 }
 
 int searchFunc(){
@@ -293,8 +397,6 @@ void returnToMenu(){
     
 }
 
-void exitMenu(){
-    int placeholder;
-    printf("Enter anything then press enter to quit: ");
-    scanf("%d", placeholder);
+int exitMenu(){
+    return 0;
 }
