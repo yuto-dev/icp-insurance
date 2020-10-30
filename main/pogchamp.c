@@ -12,30 +12,38 @@ int main(){
 
 void menu(){
     int option;
+    printf("ZeeMediLife Health Insurance Management System\n");
     printf("------------------------------\n");
     printf("1. Insurance Plan Subscription\n");
     printf("2. Insurance Claim\n");
     printf("3. Accounts Information\n");
     printf("4. Search\n");
     printf("5. Exit\n");
+    printf("------------------------------\n");
     printf("Choose option: ");
     scanf("%d", &option);
     if (option == 1){
+        printf("------------------------------\n");
         subReg();
     }
     else if (option == 2){
+        printf("------------------------------\n");
         insClaim();
     }
     else if (option == 3){
+        printf("------------------------------\n");
         accInfo();
     }
     else if (option == 4){
+        printf("------------------------------\n");
         searchFunc();
     }
     else if (option == 5){
+        printf("------------------------------\n");
         exitMenu();
     }
     else{
+        printf("------------------------------\n");
         printf("Wrong input, please try again\n");
         menu();
     }
@@ -232,6 +240,8 @@ void subReg(){
     FILE *fname = fopen("name.txt", "a");
     FILE *fplan = fopen("plan.txt", "a");
     FILE *ftype = fopen("type.txt", "a");
+    FILE *foverlimit = fopen("overlimit.txt", "a");
+    FILE *fyear = fopen("year.txt", "a");
 
     fprintf(fage, "%d\n", age);
     fprintf(fclaim, "%d\n", claim);
@@ -241,6 +251,8 @@ void subReg(){
     fprintf(fname, "%s\n", name);
     fprintf(fplan, "%d\n", plan);
     fprintf(ftype, "%d\n", type);
+    fprintf(foverlimit, "0\n");
+    fprintf(fyear, "0\n");
 
     fclose(fage);
     fclose(fclaim);
@@ -250,6 +262,8 @@ void subReg(){
     fclose(fname);
     fclose(fplan);
     fclose(ftype);
+    fclose(foverlimit);
+    fclose(fyear);
 
     fclose(idgen);
 
@@ -265,14 +279,11 @@ void insClaim(){
 
     FILE *fidlimit = fopen("nextid.txt", "r");
     
-
     int x, id, idlimit, limit, placeholder, count;
-    int sum = 0;
     int lineNumber;
     
-
     char name[32];
-    int claimable, type, plan;
+    int claim, claimable, type, plan, year, overlimit;
 
     printf("Enter ID: ");
     scanf("%d", &x);
@@ -300,6 +311,20 @@ void insClaim(){
         count++;
     }
     fclose(fname);
+    printf("Welcome, %s\n", name);
+
+    count = 0;
+    int claimHolder[limit];
+    FILE *fclaim = fopen("claim.txt", "r");
+    while (count < limit){
+        fscanf(fclaim, "%d", &iLine);
+        if (count == lineNumber){
+            claim = iLine;
+        }
+        claimHolder[count] = iLine;
+        count++;
+    }
+    fclose(fclaim);
     
     count = 0;
     int claimableHolder[limit];
@@ -312,6 +337,20 @@ void insClaim(){
         claimableHolder[count] = iLine;
         count++;
     }
+    fclose(fclaimable);
+
+    count = 0;
+    int overlimitHolder[limit];
+    FILE *foverlimit = fopen("overlimit.txt", "r");
+    while (count < limit){
+        fscanf(foverlimit, "%d", &iLine);
+        if (count == lineNumber){
+            overlimit = iLine;
+        }
+        overlimitHolder[count] = iLine;
+        count++;
+    }
+    fclose(foverlimit);
 
     count = 0;
     FILE *ftype = fopen("type.txt", "r");
@@ -322,6 +361,7 @@ void insClaim(){
         }
         count++;
     }
+    fclose(ftype);
 
     count = 0;
     FILE *fplan = fopen("plan.txt", "r");
@@ -332,7 +372,125 @@ void insClaim(){
         }
         count++;
     }
+    fclose(fplan);
 
+    count = 0;
+    int yearHolder[limit];
+    FILE *fyear = fopen("year.txt", "r");
+    while (count < limit){
+        fscanf(fyear, "%d", &iLine);
+        if (count == lineNumber){
+            year = iLine;
+        }
+        yearHolder[count] = iLine;
+        count++;
+    }
+    fclose(fyear);
+
+    int roomDays, icuDays, roomCharge, icuCharge;
+    printf("Enter how many days spent in hospital room: ");
+    scanf("%d", &roomDays);
+    printf("Enter how many days spent in ICU: ");
+    scanf("%d", &icuDays);
+    if (roomDays < 0 || icuDays < 0){
+        printf("Days spent can not be less than 0, returning to main menu..\n");
+        menu();
+    }
+
+    if (plan == 1){
+        roomCharge = roomDays * 120;
+        icuCharge = icuDays * 250;
+    }
+    else if (plan == 2){
+        roomCharge = roomDays * 150;
+        icuCharge = icuDays * 400;
+    }
+    else if (plan == 3){
+        roomCharge = roomDays * 200;
+        icuCharge = icuDays * 700;
+    }
+
+    int hSupply, hSurgical, hOther;
+    printf("Enter amount of hospital supplies and service charges: ");
+    scanf("%d", &hSupply);
+    printf("Enter amount of surgical charges: ");
+    scanf("%d", &hSurgical);
+    printf("Enter amount of other charges: ");
+    scanf("%d", &hOther);
+
+    int sum = 0, outstand, printOutstand;
+    sum = roomCharge + icuCharge + hSupply + hSurgical + hOther;
+    outstand = claimable - sum;
+    printOutstand = 0 - outstand;
+
+    if (outstand < 0){
+        printf("You have surpassed your claim limit and have RM %d outstanding fees\n", printOutstand);
+        overlimit = 1;
+    }
+    printf("---------------------\n");
+    printf("Subscriber Details\n");
+    printf("ID: %d\n", x);
+    printf("Name: %s\n", name);
+    printf("Year Claimed: 1\n");
+    printf("Insurance Claimed: %d\n", sum);
+    printf("Balance left: %d\n", outstand);
+    printf("---------------------\n");
+
+    claimableHolder[lineNumber] = outstand;
+    FILE *claimableWrite = fopen("claimable.txt", "w");
+    fprintf(claimableWrite, "%d\n", claimableHolder[0]);
+    fclose(claimableWrite);
+    FILE *claimableAppend = fopen("claimable.txt", "a");
+    count = 1;
+    while (count < limit){
+        fprintf(claimableAppend, "%d\n", claimableHolder[count]);
+        count++;
+    }
+    fclose(claimableAppend);
+
+    claimHolder[lineNumber] = sum;
+    FILE *claimWrite = fopen("claim.txt", "w");
+    fprintf(claimWrite, "%d\n", claimHolder[0]);
+    fclose(claimWrite);
+    FILE *claimAppend = fopen("claim.txt", "a");
+    count = 1;
+    while (count < limit){
+        fprintf(claimAppend, "%d\n", claimHolder[count]);
+        count++;
+    }
+    fclose(claimAppend);
+
+    yearHolder[lineNumber] = 1;
+    FILE *yearWrite = fopen("year.txt", "w");
+    fprintf(yearWrite, "%d\n", yearHolder[0]);
+    fclose(yearWrite);
+    FILE *yearAppend = fopen("year.txt", "a");
+    count = 1;
+    while (count < limit){
+        fprintf(yearAppend, "%d\n", yearHolder[count]);
+        count++;
+    }
+    fclose(yearAppend);
+
+    if (type == 1 && overlimit == 1){
+        overlimitHolder[lineNumber] = 1;
+        FILE *overlimitWrite = fopen("overlimit.txt", "w");
+        fprintf(overlimitWrite, "%d\n", overlimitHolder[0]);
+        fclose(overlimitWrite);
+        FILE *overlimitAppend = fopen("overlimit.txt", "a");
+        count = 1;
+        while (count < limit){
+            fprintf(overlimitAppend, "%d\n", overlimitHolder[count]);
+            count++;
+        }
+        fclose(overlimitAppend);
+    }
+
+    if (type == 2){
+        FILE *lifeclaimAppend = fopen("lifeclaim.txt", "a");
+        fprintf(lifeclaimAppend, "%d\n", sum);
+        fclose(lifeclaimAppend);
+    }
     returnToMenu();
 }
 
@@ -343,31 +501,41 @@ void accInfo(){
 }
 
 void accInfoA(){
-    FILE *flimit = fopen("nextid.txt", "r");
-    int limit;
-    int sum = 0;
-    int placeholder;
+    int count, sum = 0, line, limit;
 
-    fscanf(flimit,"%d", &limit);
+    FILE *nextlimit = fopen("nextclaim.txt", "r");
+    fscanf(nextlimit,"%d", &limit);
+    fclose(nextlimit);
 
-    FILE *file = fopen("claim.txt", "r");
-    int count = 0;
-    if ( file != NULL ){
-        int line; /* or other suitable maximum line size */
-        while (count < limit) /* read a line */    
-        {
-            fscanf(file, "%d", &line);
+    FILE *flifeclaim = fopen("lifeclaim.txt", "r");
+        count = 0;
+        while (count < limit){
+            fscanf(flifeclaim, "%d", &line);
             sum = sum + line;
             count++;
         }
-        printf("%d\n", sum);
-        fclose(flimit);
-        fclose(file);
-    }
+        fclose(flifeclaim);
+
+    printf("Total amount claimed by Lifetime Claim Limit Subscribers: RM %d\n", sum);
 }
 
 void accInfoB(){
-    printf("accInfoB\n");
+    int count, sum = 0, line, limit;
+
+    FILE *nextlimit = fopen("nextid.txt", "r");
+    fscanf(nextlimit,"%d", &limit);
+    fclose(nextlimit);
+
+    FILE *foverlimit = fopen("overlimit.txt", "r");
+        count = 0;
+        while (count < limit){
+            fscanf(foverlimit, "%d", &line);
+            sum = sum + line;
+            count++;
+        }
+        fclose(foverlimit);
+
+    printf("Total number of Annual Claim Limit subscribers who have exhausted all their eligible amount: %d\n", sum);
 }
 
 int searchFunc(){
