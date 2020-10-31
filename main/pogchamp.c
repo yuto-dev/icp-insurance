@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-int searchFunc(), exitMenu();
-void menu(), accInfo(), accInfoA(), accInfoB(), subReg(), returnToMenu(), insClaim();
+int exitMenu();
+void menu(), accInfo(), accInfoA(), accInfoB(), subReg(), returnToMenu(), insClaim(), searchFunc();
+void searchID(), searchName(), searchPlan(), searchType(), searchAge();
 
 int main(){
     menu();
@@ -276,8 +277,6 @@ void subReg(){
 }
 
 void insClaim(){
-
-    FILE *fidlimit = fopen("nextid.txt", "r");
     
     int x, id, idlimit, limit, placeholder, count;
     int lineNumber;
@@ -288,6 +287,8 @@ void insClaim(){
     printf("Enter ID: ");
     scanf("%d", &x);
     lineNumber = x - 1;
+
+    FILE *fidlimit = fopen("nextid.txt", "r");
     fscanf(fidlimit,"%d", &idlimit);
     limit = idlimit;
 
@@ -548,14 +549,166 @@ void accInfoB(){
     printf("Total number of Annual Claim Limit subscribers who have exhausted all their eligible amount: %d\n", sum);
 }
 
-int searchFunc(){
-    printf("d\n");
-    exitMenu();
+void searchFunc(){
+    searchID();
+}
+
+void searchID(){
+
+    int count, limit, line, lineNumber, x;
+    char name[32];
+
+    printf("Enter ID: ");
+    scanf("%d", &x);
+    lineNumber = x - 1;
+
+    FILE *fidlimit = fopen("nextid.txt", "r");
+    fscanf(fidlimit,"%d", &limit);
+    fclose(fidlimit);
+
+    char cLine[32];
+    int iLine;
+
+    int year, plan, type, claimable, age;
+
+    count = 0;
+    FILE *fname = fopen("name.txt", "r");
+    while (count < limit){
+        fscanf(fname, "%s", &cLine);
+        if (count == lineNumber){
+            strcpy(name,cLine);
+        }
+        count++;
+    }
+    fclose(fname);
+
+    count = 0;
+    FILE *fclaimable = fopen("claimable.txt", "r");
+    while (count < limit){
+        fscanf(fclaimable, "%d", &iLine);
+        if (count == lineNumber){
+            claimable = iLine;
+        }
+        count++;
+    }
+    fclose(fclaimable);
+
+    count = 0;
+    FILE *ftype = fopen("type.txt", "r");
+    while (count < limit){
+        fscanf(ftype, "%d", &iLine);
+        if (count == lineNumber){
+            type = iLine;
+        }
+        count++;
+    }
+    fclose(ftype);
+
+    count = 0;
+    FILE *fplan = fopen("plan.txt", "r");
+    while (count < limit){
+        fscanf(fplan, "%d", &iLine);
+        if (count == lineNumber){
+            plan = iLine;
+        }
+        count++;
+    }
+    fclose(fplan);
+
+    count = 0;
+    FILE *fyear = fopen("year.txt", "r");
+    while (count < limit){
+        fscanf(fyear, "%d", &iLine);
+        if (count == lineNumber){
+            year = iLine;
+        }
+        count++;
+    }
+    fclose(fyear);
+
+    count = 0;
+    FILE *fage = fopen("age.txt", "r");
+    while (count < limit){
+        fscanf(fage, "%d", &iLine);
+        if (count == lineNumber){
+            age = iLine;
+        }
+        count++;
+    }
+    fclose(fyear);
+
+    char sType[32];
+
+    printf("------------------------------\n");
+    printf("Subscriber Record\n");
+    printf("ID: %d\n", x);
+    printf("Name: %s\n", name);
+    printf("Age: %d\n", age);
+    if (type == 1){
+        printf("Claim Limit Type: Annual\n");
+    }
+    else if (type == 2){
+        printf("Claim Limit Type: Lifetime\n");
+    }
+    if (plan == 1){
+        printf("Plan: Plan120\n");
+    }
+    else if (plan == 2){
+        printf("Plan: Plan150\n");
+    }
+    else if (plan == 3){
+        printf("Plan: Plan200\n");
+    }
+    printf("Year(s) Claimed: %d\n", year);
+    printf("Balance left: %d\n", claimable);
+    printf("------------------------------\n");
+
+    returnToMenu();
+}
+
+void searchName(){
+
+    int count, idCount, limit, idCatch, idIndex = 0;
+    char name[32], cLine[32];
+    int idHolder[32];
+    int strComp;
+
+    printf("Enter name: ");
+    scanf(" %s", &name);
+
+    FILE *fidlimit = fopen("nextid.txt", "r");
+    fscanf(fidlimit,"%d", &limit);
+    fclose(fidlimit);
+
+    limit = 6;
+
+    count = 0;
+    FILE *fname = fopen("name.txt", "r");
+    while (count < limit){
+        fscanf(fname, "%s", &cLine);
+        strComp = strcmp(cLine, name);
+        if (strComp == 0){
+            idCatch = count + 1;
+            idHolder[idIndex] = idCatch;
+            idIndex++;
+        }
+        count++;
+    }
+    fclose(fname);
+
+    idCount = 0;
+    while (idCount < idIndex){
+        printf("%d\n", idHolder[idCount]);
+        idCount++;
+    }
+
+    returnToMenu();
 }
 
 void returnToMenu(){
     int navHolder;
 
+    printf("------------------------------\n");
     printf("Return to menu?\n");
     printf("1. Yes\n");
     printf("2. No\n");
