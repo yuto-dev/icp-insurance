@@ -1,0 +1,888 @@
+PROGRAM ABIYYU_TAJ_MAHASIN_BAGINDO_TP058652
+BEGIN
+
+IMPORT stdio.h, stdlib.h, string.h
+
+INT exitMenu()
+VOID menu(), accInfo(), accInfoA(), accInfoB(), subReg(), returnToMenu(), insClaim(), searchFunc(), searchID(), searchName(), searchPlan(), searchType(), searchAge(), actualSearch(int)
+
+FUNCTION main()
+    menu()
+    return 0
+
+FUNCTION menu()
+
+    INT option
+
+    PRINT "ZeeMediLife Health Insurance Management System"
+    PRINT "------------------------------"
+    PRINT "1. Insurance Plan Subscription"
+    PRINT "2. Insurance Claim"
+    PRINT "3. Accounts Information"
+    PRINT "4. Search"
+    PRINT "5. Exit"
+    PRINT "------------------------------"
+    PRINT "Choose option: "
+    READ option
+
+    IF option == 1
+        PRINT "------------------------------"
+        subReg()
+    ELSE IF option == 2
+        PRINT "------------------------------"
+        insClaim()
+    ELSE IF option == 3
+        PRINT "------------------------------"
+        accInfo()
+    ELSE IF option == 4
+        PRINT "------------------------------"
+        searchFunc()
+    ELSE IF option == 5
+        PRINT "------------------------------"
+        exitMenu()
+    ELSE
+        PRINT "------------------------------"
+        PRINT "Wrong input, please try again"
+        menu()
+    ENDIF
+
+FUNCTION subReg()
+
+    INT claim = 0
+    INT age, plan, id, nextid, type, claimable
+    CHAR name[32]
+
+    OPENFILE "nextid.txt" AS idgen FOR READING
+    READ idgen TO id
+    CLOSEFILE idgen
+    nextid = id + 1  
+
+    PRINT "ZeeMediLife Health Insurance Plan"
+    PRINT "-----------------------------------------------------------------------------------------"
+    PRINT "                       |     Plan120(RM)     |     Plan150(RM)     |     Plan200(RM)     "
+    PRINT "-----------------------------------------------------------------------------------------"
+    PRINT "Monthly Premium        |          120        |          150        |         200         "
+    PRINT "Annual Claim Limit     |       120,000       |        150,000      |       200,000       "
+    PRINT "Lifetime Claim Limit   |       600,000       |        750,000      |      1,000,000      "
+    PRINT "-----------------------------------------------------------------------------------------"
+
+    PRINT "Enter first name: "
+    READ name
+    PRINT "Enter age: "
+    READ age
+    IF age < 0 OR age > 54
+        PRINT "We're sorry but we don't have any plans for the entered age, returning to main menu.."    
+        menu()
+    ENDIF
+
+    PRINT "Plan Types:"
+    PRINT "1. Annual Claim"
+    PRINT "2. Lifetime Claim"
+    PRINT "Choose plan type: "
+    READ type
+    IF type != 1
+        IF type != 2
+            PRINT "Wrong input, going back to main menu.."
+            menu()
+        ENDIF
+    ENDIF
+
+    IF 0 < age AND age < 21
+        IF type == 1
+            PRINT "Available Plans"
+            PRINT "-----------------------------------------------------------------------------------------"
+            PRINT "                       |     Plan120(RM)     |     Plan150(RM)     |     Plan200(RM)     "
+            PRINT "-----------------------------------------------------------------------------------------"
+            PRINT "Monthly Premium        |          120        |          150        |         200         "
+            PRINT "Annual Claim Limit     |       120,000       |        150,000      |       200,000       "
+            PRINT "-----------------------------------------------------------------------------------------"
+            PRINT "1. RM 120 Plan"
+            PRINT "2. RM 150 Plan"
+            PRINT "3. RM 200 Plan"
+            PRINT "Choose plan: "
+            READ plan
+            IF plan < 0 OR 3 < plan
+                PRINT "Wrong input, returning to main menu.."
+                menu()
+            ENDIF
+        ELSE IF type == 2
+            PRINT "Available Plans"
+            PRINT "-----------------------------------------------------------------------------------------"
+            PRINT "                       |     Plan120(RM)     |     Plan150(RM)     |     Plan200(RM)     "
+            PRINT "-----------------------------------------------------------------------------------------"
+            PRINT "Monthly Premium        |          120        |          150        |         200         "
+            PRINT "Lifetime Claim Limit   |       600,000       |        750,000      |      1,000,000      "
+            PRINT "-----------------------------------------------------------------------------------------"
+            PRINT "1. RM 120 Plan"
+            PRINT "2. RM 150 Plan"
+            PRINT "3. RM 200 Plan"
+            PRINT "Choose plan: "
+            READ plan
+            IF plan < 0 OR 3 < plan
+                PRINT "Wrong input, returning to main menu.."
+                menu()
+            ENDIF
+        ELSE
+            PRINT "Wrong input, going back to main menu.."
+            menu()
+        ENDIF
+    ELSE IF 20 < age AND age < 41
+        IF type == 1
+            PRINT "Available Plans"
+            PRINT "-------------------------------------------------------------------"
+            PRINT "                       |     Plan150(RM)     |     Plan200(RM)     "
+            PRINT "-------------------------------------------------------------------"
+            PRINT "Monthly Premium        |          150        |         200         "
+            PRINT "Annual Claim Limit     |        150,000      |       200,000       "
+            PRINT "-------------------------------------------------------------------"
+            PRINT "1. RM 150 Plan"
+            PRINT "2. RM 200 Plan"
+            PRINT "Choose plan: "
+            READ plan
+            IF plan == 1
+                plan = 2
+            ELSE IF plan == 2
+                plan = 3
+            ELSE
+                PRINT "Wrong input, returning to main menu.."
+                menu()
+            ENDIF
+        ELSE IF type == 2
+            PRINT "Available Plans"
+            PRINT "-------------------------------------------------------------------"
+            PRINT "                       |     Plan150(RM)     |     Plan200(RM)     "
+            PRINT "-------------------------------------------------------------------"
+            PRINT "Monthly Premium        |          150        |         200         "
+            PRINT "Annual Claim Limit     |        750,000      |      1,000,000      "
+            PRINT "-------------------------------------------------------------------"
+            PRINT "1. RM 150 Plan"
+            PRINT "2. RM 200 Plan"
+            PRINT "Choose plan: "
+            READ plan
+            IF plan == 1
+                plan = 2
+            ELSE IF plan == 2
+                plan = 3
+            ELSE
+                PRINT "Wrong input, returning to main menu.."
+                menu()
+            ENDIF
+        ENDIF
+    ELSE IF 40 < age && age < 55
+        IF type == 1
+            PRINT "Available Plans"
+            PRINT "---------------------------------------------"
+            PRINT "                       |     Plan200(RM)     "
+            PRINT "---------------------------------------------"
+            PRINT "Monthly Premium        |         200         "
+            PRINT "Annual Claim Limit     |       200,000       "
+            PRINT "---------------------------------------------"
+            plan = 3;
+        ELSE IF type == 2
+             PRINT "Available Plans"
+            PRINT "---------------------------------------------"
+            PRINT "                       |     Plan200(RM)     "
+            PRINT "---------------------------------------------"
+            PRINT "Monthly Premium        |         200         "
+            PRINT "Annual Claim Limit     |       1,000,000     "
+            PRINT "---------------------------------------------"
+            plan = 3;
+        ELSE
+            PRINT "Wrong input, going back to main menu.."
+            menu()
+        ENDIF
+    ENDIF
+
+    IF type == 1
+        IF plan == 1
+            claimable = 120000
+        ELSE IF plan == 2
+            claimable = 150000
+        ELSE IF plan == 3
+            claimable = 200000
+        ELSE
+            PRINT "Wrong input, returning to main menu.."
+            menu()
+        ENDIF
+    ELSE IF type == 2
+        IF plan == 1
+            claimable = 600000
+        ELSE IF plan == 2
+            claimable = 750000
+        ELSE IF plan == 3
+            claimable = 1000000
+        ELSE
+            PRINT "Wrong input, returning to main menu.."
+            menu()
+        ENDIF
+    ENDIF
+
+    OPENFILE age.txt AS fage FOR APPEND
+    OPENFILE claim.txt AS fclaim FOR APPEND
+    OPENFILE claimable.txt AS fclaimable FOR APPEND
+    OPENFILE id.txt AS fid FOR APPEND
+    OPENFILE name.txt AS fname FOR APPEND
+    OPENFILE plan.txt AS fplan FOR APPEND
+    OPENFILE type.txt AS ftype FOR APPEND
+    OPENFILE overlimit.txt AS foverlimit FOR APPEND
+    OPENFILE year.txt AS fyear FOR APPEND
+
+    PRINT age TO fage
+    PRINT claim TO fclaim
+    PRINT claimable TO fclaimable
+    PRINT nextid TO fid
+    PRINT name TO fname
+    PRINT plan TO fplan
+    PRINT type TO ftype
+    PRINT "0" TO foverlimit
+    PRINT "0" TO fyear
+
+    CLOSEFILE fage
+    CLOSEFILE fclaim
+    CLOSEFILE fclaimable
+    CLOSEFILE fid
+    CLOSEFILE fname
+    CLOSEFILE fplan
+    CLOSEFILE ftype
+    CLOSEFILE foverlimit
+    CLOSEFILE fyear
+
+    OPENFILE "nextid.txt" AS idwrite FOR WRITING
+    PRINT nextid TO idwrite
+    CLOSEFILE idwrite
+
+    returnToMenu()
+
+ENDFUNCTION
+
+FUNCTION insClaim()
+
+    INT x, id, idlimit, limit, count
+    INT lineNumber
+
+    CHAR name[32]
+    INT claim, claimable, type, plan, year, overlimit
+
+    PRINT "Enter ID"
+    READ x
+    lineNumber = x + 1
+
+    OPENFILE "nextid" AS fidlimit FOR READING
+    READ fidlimit TO idlimit
+    limit = idlimit
+
+    IF x < 0 OR x > idlimit
+        PRINT "ID not found, returning to main menu..
+        menu()
+    ENDIF
+
+    CHAR cLine[32]
+    int iLine
+
+    count = 0
+    OPENFILE "name.txt" AS fname FOR READING
+    WHILE count < limit
+        READ fname TO cLine
+        IF count == lineNumber
+            name = cLine
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE fname
+
+    PRINT "Welcome, " + name
+
+    count = 0
+    INT claimHolder[limit]
+    OPENFILE "claim.txt" AS fclaim FOR READING
+    WHILE count < limit
+        READ fclaim TO iLine
+        IF count == lineNumber
+            claim = iLine
+        ENDIF
+        claimHolder[count] = iLine
+        count++
+    ENDWHILE
+    CLOSEFILE fclaim
+
+    count = 0
+    INT claimableHolder[limit]
+    OPENFILE "claimable.txt" AS fclaimable FOR READING
+    WHILE count < limit
+        READ fclaimable TO iLine
+        IF count == lineNumber
+            claimable = iLine
+        ENDIF
+        claimableHolder[count] = iLine
+        count++
+    ENDWHILE
+    CLOSEFILE fclaimable
+
+    count = 0
+    INT overlimitHolder[limit]
+    OPENFILE "overlimit.txt" AS foverlimit FOR READING
+    WHILE count < limit
+        READ foverlimit TO iLine
+        IF count == lineNumber
+            overlimit = iLine
+        ENDIF
+        overlimitHolder[count] = iLine
+        count++
+    ENDWHILE
+    CLOSEFILE foverlimit
+
+    count = 0
+    OPENFILE "type.txt" AS ftype FOR READING
+    WHILE count < limit
+        READ ftype TO iLine
+        IF count == lineNumber
+            type = iLine
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE ftype
+
+    count = 0
+    OPENFILE "plan.txt" AS fplan FOR READING
+    WHILE count < limit
+        READ fplan TO iLine
+        IF count == lineNumber
+            plan = iLine
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE fplan
+
+    count = 0
+    INT yearHolder[limit]
+    OPENFILE "year.txt" AS fyear FOR READING
+    WHILE count < limit
+        READ fyear TO iLine
+        IF count == lineNumber
+            year = iLine
+        ENDIF
+        yearHolder[count] = iLine
+        count++
+    ENDWHILE
+    CLOSEFILE fyear
+
+    INT roomDays, icuDays, roomCharge, icuCharge
+
+    PRINT "Enter how many days spent in hospital room: "
+    READ roomDays
+    PRINT "Enter how many days spent in ICU: "
+    READ icuDays
+    IF roomDays < 0 OR icuDays < 0
+        PRINT "Days spent cannot be less than 0, return to main menu.."
+        menu()
+    ENDIF
+
+    IF plan == 1
+        roomCharge = roomDays * 120
+        icuCharge = icuDays * 250
+    ELSE IF plan == 2
+        roomCharge = roomDays * 150
+        icuCharge = icuDays * 400
+    ELSE IF plan == 3
+        roomCharge = roomDays * 200
+        icuCharge = icuDays * 700
+    ENDIF
+
+    INT hSupply, hSurgical, hOther
+    PRINT "Enter amount of hospital supplies and service charges: "
+    READ hSupply
+    PRINT "Enter amount of surgical charges: "
+    READ hSurgical
+    PRINT "Enter amount of other charges: "
+    READ hOther
+
+    INT sum = 0, outstand, printOutstand
+    sum = roomCharge + icuCharge + hSupply + hSurgical + hOther
+    outstand = claimable - sum
+    printOutstand = 0 - outstand
+
+    IF outstand < 0
+        PRINT "You have surpassed your claim limit and have RM " + printOutstand + " outstanding fees"
+        overlimit = 1
+    ENDIF
+
+    PRINT "---------------------"
+    PRINT "Subscriber Details"
+    PRINT "ID: " + x
+    PRINT "Name: " + name
+    PRINT "Year Claimed: 1"
+    PRINT "Insurance Claimed " + sum
+    PRINT "Balance Left: " + outstand
+
+    claimableHolder[lineNumber] = outstand
+    OPENFILE "claimable.txt" AS claimableWrite FOR WRITING
+    PRINT claimableHolder[0] TO claimableWrite
+    CLOSEFILE claimableWrite
+    OPENFILE "claimable.txt" AS claimableAppend FOR APPEND
+    count = 1
+    WHILE count < limit
+        PRINT claimableHolder[count] TO claimableAppend
+        count++
+    ENDWHILE
+    CLOSEFILE claimableAppend
+
+    claimHolder[lineNumber] = sum
+    OPENFILE "claim.txt" AS claimWrite FOR WRITING
+    PRINT claimHolder[0] TO claimWrite
+    CLOSEFILE claimWrite
+    OPENFILE "claim.txt" AS claimAppend FOR APPEND
+    count = 1
+    WHILE count < limit
+        PRINT claimHolder[count] TO claimAppend
+        count++
+    ENDWHILE
+    CLOSEFILE claimAppend
+
+    yearHolder[lineNumber] = 1
+    OPENFILE "year.txt" AS yearWrite FOR WRITING
+    PRINT yearHolder[0] TO yearWrite
+    CLOSEFILE yearWrite
+    OPENFILE "year.txt" AS yearAppend FOR APPEND
+    count = 1
+    WHILE count < limit
+        PRINT yearHolder[count] TO yearAppend
+        count++
+    ENDWHILE
+    CLOSEFILE yearAppend
+
+    IF type == 1 AND overlimit == 1
+        overlimitHolder[lineNumber] = 1
+        OPENFILE "overlimit.txt" AS overlimitWrite FOR WRITING
+        PRINT overlimitHolder[0] TO yearWrite
+        CLOSEFILE overlimitWrite
+        OPENFILE "overlimit.txt" AS overlimitAppend FOR APPEND
+        count = 1
+        WHILE count < limit
+            PRINT overlimitHolder[count] TO overlimitAppend
+            count++
+        ENDWHILE
+        CLOSEFILE overlimitAppend
+    ENDIF
+
+    INT nextclaim
+    IF type == 2
+        OPENFILE "lifeclaim.txt" AS lifeclaimAppend FOR APPEND
+        PRINT sum TO lifeclaimAppend
+        CLOSEFILE lifeclaimAppend
+
+        OPENFILE "nextclaim.txt" AS fnextclaim FOR READING
+        READ fnextclaim TO nextclaim
+        nextclaim = nextclaim + 1
+        CLOSEFILE fnextclaim
+
+        OPENFILE "nextclaim.txt" AS fnextclaimwrite FOR WRITING
+        PRINT nextclaim TO fnextclaimwrite
+        CLOSEFILE fnextclaimwrite
+    ENDIF
+
+    returnToMenu()
+
+ENDFUNCTION
+
+FUNCTION accInfo
+
+    accInfoA()
+    accInfoB()
+
+    returnToMenu()
+
+ENDFUNCTION
+
+FUNCTION searchFunc
+
+    INT searchCriteria
+
+    PRINT "Available Search Criteria"
+    PRINT "1. Search by ID"
+    PRINT "2. Search by name"
+    PRINT "3. Search by plan"
+    PRINT "4. Search by claim limit type"
+    PRINT "5. Search by age"
+    PRINT "Choose option: "
+    READ searchCriteria
+
+    IF searchCriteria == 1
+        PRINT "------------------------------"
+        searchID()
+        returnToMenu()
+    ELSE IF searchCriteria == 2
+        PRINT "------------------------------"
+        searchName()
+        returnToMenu()
+    ELSE IF searchCriteria == 3
+        PRINT "------------------------------"
+        searchPlan()
+        returnToMenu()
+    ELSE IF searchCriteria == 4
+        PRINT "------------------------------"
+        searchType()
+        returnToMenu()
+    ELSE IF searchCriteria == 5
+        PRINT "------------------------------"
+        searchAge()
+        returnToMenu()
+    ELSE
+        PRINT "Wrong input, returning to menu.."
+        menu()
+    ENDIF
+
+ENDFUNCTION
+
+FUNCTION accInfoA()
+
+    INT count, sum = 0, line, limit
+
+    OPENFILE "nextclaim.txt" AS nextlimit FOR READING
+    READ nextlimit TO limit
+    CLOSEFILE nextlimit
+
+    OPENFILE "lifeclaim.txt" AS flifeclaim FOR READING
+    count = 0
+    WHILE count < limit
+        READ flifeclaim TO line
+        sum = sum + line
+        count++
+    ENDWHILE
+    CLOSEFILE flifeclaim
+
+    PRINT "Total amount claimed by Lifetime Claim Limit Subscribers: RM " + sum
+
+ENDFUNCTION
+
+FUNCTION accInfoB
+
+    INT count, sum = 0, line, limit
+
+    OPENFILE "nextid.txt" AS nextlimit FOR READING
+    READ nextlimit TO limit
+    CLOSEFILE nextlimit
+
+    OPENFILE "overlimit.txt" AS foverlimit FOR READING
+    count = 0
+    WHILE count < limit
+        READ foverlimit TO line
+        sum = sum + line
+        count++
+    ENDWHILE
+    CLOSEFILE foverlimit
+
+    PRINT "Total number of Annual Claim Limit subscribers who have exhausted all their eligible amount: " + sum
+
+ENDFUNCTION
+
+FUNCTION actualSearch(INT x)
+
+    INT count, limit, line, lineNumber
+    CHAR name[32]
+
+    lineNumber = x - 1
+
+    OPENFILE "nextid.txt" AS fidlimit FOR READING
+    READ fidlimit TO limit
+    CLOSEFILE fidlimit
+
+    CHAR cLine[32]
+    INT iLine
+
+    INT year, plan, type, claimable, age
+
+    count = 0
+    OPENFILE "name.txt" AS fname FOR READING
+    WHILE count < limit
+        READ fname TO cLine
+        IF count == lineNumber
+            name = cLine
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE fname
+
+    count = 0
+    OPENFILE "claimable.txt" AS fclaimable FOR READING
+    WHILE count < limit
+        READ fclaimable TO iLine
+        IF count == lineNumber
+            claimable = iLine
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE fclaimable
+
+    count = 0
+    OPENFILE "type.txt" AS ftype FOR READING
+    WHILE count < limit
+        READ ftype TO iLine
+        IF count == lineNumber
+            type = iLine
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE ftype
+
+    count = 0
+    OPENFILE "plan.txt" AS fplan FOR READING
+    WHILE count < limit
+        READ fplan TO iLine
+        IF count == lineNumber
+            plan = iLine
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE fplan
+
+    count = 0
+    OPENFILE "year.txt" AS fyear FOR READING
+    WHILE count < limit
+        READ fyear TO iLine
+        IF count == lineNumber
+            year = iLine
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE fyear
+
+    count = 0
+    OPENFILE "age.txt" AS fage FOR READING
+    WHILE count < limit
+        READ fage TO iLine
+        IF count == lineNumber
+            age = iLine
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE fage
+
+    PRINT "------------------------------"
+    PRINT "Subscriber Record"
+    PRINT "ID: " + x
+    PRINT "Name: " + name
+    PRINT "Age: " + age
+    IF type == 1
+        PRINT "Claim Limit Type: Annual"
+    ELSE IF type == 2
+        PRINT "Claim Limit Type: Lifetime"
+    ENDIF
+    IF plan == 1
+        PRINT "Plan: Plan120"
+    ELSE IF plan == 2
+        PRINT "Plan: Plan150"
+    ELSE IF plan == 3
+        PRINT "Plan: Plan200"
+    ENDIF
+    PRINT "Year(s) Claimed: " + year
+    PRINT "Balance left: " + claimable
+    PRINT "------------------------------"
+
+ENDFUNCTION
+
+FUNCTION searchID()
+
+    INT id
+
+    PRINT "Enter ID: "
+    READ id
+
+    actualSearch(id)
+
+    returnToMenu()
+
+ENDFUNCTION
+
+FUNCTION searchName()
+
+    INT count, idCount, limit, idCatch, idIndex = 0
+    char name[32], cLine[32]
+    int idHolder[32]
+    int strComp
+
+    PRINT "Enter name: "
+    READ name
+
+    OPENFILE "nextid.txt" AS fidlimit FOR READING
+    READ fidlimit TO limit
+    CLOSEFILE fidlimit
+
+    count = 0
+    OPENFILE "name.txt" AS fname FOR READING
+    WHILE count < limit
+        READ fname TO cLine
+        strComp = strcmp(cLine, name)
+        IF strComp == 0
+            idCatch = count + 1
+            idHolder[idIndex] = idCatch
+            idIndex++
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE fname
+
+    idCount = 0
+    WHILE idCount < idIndex
+        actualSearch(idHolder[idCount])
+        idCount++
+    ENDWHILE
+
+    returnToMenu()
+
+ENDFUNCTION
+
+FUNCTION searchPlan
+
+    INT count, idCount, limit, idCatch, idIndex = 0, plan, iLine
+    CHAR cLine[32]
+    INT idHolder[32]
+    INT strComp
+
+    PRINT "1. Plan120"
+    PRINT "2. Plan150"
+    PRINT "3. Plan200"
+    PRINT "Enter plan (1, 2, or 3): "
+    READ plan
+
+    IF plan < 0 OR plan > 3
+        PRINT "Wrong input, returning to main menu.."
+        menu()
+    ENDIF
+
+    OPENFILE "nextid.txt" AS fidlimit FOR READING
+    READ fidlimit TO limit
+    CLOSEFILE fidlimit
+
+    count = 0
+    OPENFILE "plan.txt" AS fplan FOR READING
+    WHILE count < limit
+        READ fplan TO iLine
+        IF iLine == plan
+            idCatch = count + 1
+            idHolder[idIndex] = idCatch
+            idIndex++
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE fplan
+
+    idCount = 0
+    WHILE (idCount < idIndex){
+        actualSearch(idHolder[idCount])
+        idCount++
+    }
+
+    returnToMenu()
+
+ENDFUNCTION
+
+FUNCTION searchType()
+
+    INT count, idCount, lifeclaim, idCatch, idIndex = 0, type, iLine
+    INT idHolder[32]
+
+    PRINT "1. Annual Claim Limit"
+    PRINT "2. Lifetime Claim Limit"
+    PRINT "Enter Claim Limit (1 or 2): "
+    READ type
+
+    IF type < 0 OR type > 2
+        PRINT "Wrong input, returning to main manu.."
+        menu()
+    ENDIF
+
+    OPENFILE "nextid.txt" AS fidlimit FOR READING
+    READ fidlimit TO limit
+    CLOSEFILE fidlimit
+
+    count = 0
+    OPENFILE "type.txt" AS ftype FOR READING
+    WHILE count < limit
+        READ ftype TO iLine
+        IF iLine == type
+            idCatch = count + 1
+            idHolder[idIndex] = idCatch
+            idIndex++
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE ftype
+
+    idCount = 0
+    WHILE idCount < idIndex
+        actualSearch(idHolder[idCount])
+        idCount++
+    ENDWHILE
+
+    returnToMenu()
+
+ENDFUNCTION
+
+FUNCTION searchAge()
+
+    INT count, idCount, limit, idCatch, idIndex = 0, age, iLine
+    INT idHolder[32]
+
+    PRINT "Enter age: "
+    READ age
+    
+    IF age < 0 OR age > 55
+        PRINT "Wrong input, returning to main menu.."
+        menu()
+    ENDIF
+
+    OPENFILE "nextid.txt" AS fidlimit FOR READING
+    READ fidlimit TO limit
+    CLOSEFILE fidlimit
+
+    count = 0
+    OPENFILE "age.txt" AS fage FOR READING
+    WHILE count < limit
+        READ fage TO iLine
+        IF iLine == age
+            idCatch = count + 1
+            idHolder[idIndex] = idCatch
+            idIndex++
+        ENDIF
+        count++
+    ENDWHILE
+    CLOSEFILE fage
+
+    idCount = 0
+    WHILE idCount < idIndex
+        actualSearch(idHolder[idCount])
+        idCount++
+    ENDWHILE
+
+    returnToMenu()
+
+ENDFUNCTION
+
+FUNCTION returnToMenu()
+
+    int navHolder
+
+    PRINT "------------------------------"
+    PRINT "Return to menu?"
+    PRINT "1. Yes"
+    PRINT "2. No"
+    PRINT "Choose option: "
+    READ navHolder
+
+    IF navHolder == 1
+        menu()
+    ELSE IF navHolder == 2
+        exitMenu()
+    ELSE
+        PRINT "Wrong input, please try again"
+        returnToMenu
+    ENDIF
+
+ENDFUNCTION
+
+FUNCTION exitMenu
+
+    return 0
+
+ENDFUNCTION
+    

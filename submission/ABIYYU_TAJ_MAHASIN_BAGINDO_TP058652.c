@@ -24,6 +24,7 @@ void menu(){
 
     int option;
 
+    printf("------------------------------\n");
     printf("ZeeMediLife Health Insurance Management System\n");
     printf("------------------------------\n");
     printf("1. Insurance Plan Subscription\n");
@@ -135,6 +136,10 @@ void subReg(){
             printf("3. RM 200 Plan\n");
             printf("Choose plan: ");
             scanf(" %d", &plan);
+            if (plan < 0 || 3 < plan){
+                printf("Wrong input, returning to main menu..\n");
+                menu();
+            }
         }
         else if (type == 2){
             printf("Available Plans\n");
@@ -149,6 +154,10 @@ void subReg(){
             printf("3. RM 200 Plan\n");
             printf("Choose plan: ");
             scanf(" %d", &plan);
+            if (plan < 0 || 3 < plan){
+                printf("Wrong input, returning to main menu..\n");
+                menu();
+            }
         }
         else{
             printf("Wrong input, going back to main menu..\n");
@@ -174,6 +183,11 @@ void subReg(){
             else if (plan == 2){
                 plan = 3;
             }
+            else{
+                printf("Wrong input, returning to main menu..\n");
+                menu();
+            }
+            
         }
         else if (type == 2){
             printf("Available Plans\n");
@@ -192,6 +206,10 @@ void subReg(){
             }
             else if (plan == 2){
                 plan = 3;
+            }
+            else{
+                printf("Wrong input, returning to main menu..\n");
+                menu();
             }
         }    
         else{
@@ -581,7 +599,7 @@ void insClaim(){
         nextclaim = nextclaim + 1;
         fclose(fnextclaim);
 
-        FILE *fnextclaimwrite = fopen("nextid.txt", "w");
+        FILE *fnextclaimwrite = fopen("nextclaim.txt", "w");
         fprintf(fnextclaimwrite, "%d", nextclaim);
         fclose(fnextclaimwrite);
     }
@@ -674,13 +692,13 @@ void accInfoA(){
     // Reads the "lifeclaim.txt" file and sum it all up.
 
     FILE *flifeclaim = fopen("lifeclaim.txt", "r");
-        count = 0;
-        while (count < limit){
-            fscanf(flifeclaim, "%d", &line);
-            sum = sum + line;
-            count++;
-        }
-        fclose(flifeclaim);
+    count = 0;
+    while (count < limit){
+        fscanf(flifeclaim, "%d", &line);
+        sum = sum + line;
+        count++;
+    }
+    fclose(flifeclaim);
 
     // Prints the sum.
 
@@ -706,13 +724,13 @@ void accInfoB(){
     // Reads the "overlimit.txt" file and sum it all up.
 
     FILE *foverlimit = fopen("overlimit.txt", "r");
-        count = 0;
-        while (count < limit){
-            fscanf(foverlimit, "%d", &line);
-            sum = sum + line;
-            count++;
-        }
-        fclose(foverlimit);
+    count = 0;
+    while (count < limit){
+        fscanf(foverlimit, "%d", &line);
+        sum = sum + line;
+        count++;
+    }
+    fclose(foverlimit);
 
     // Prints the sum.
 
@@ -859,7 +877,7 @@ void searchID(){
     // Prompts the user for a subscriber ID.
 
     printf("Enter ID: ");
-    scanf("%d", id);
+    scanf("%d", &id);
     
     // Passes the subscriber ID to the function "actualSearch"
     // as an argument 
@@ -1010,7 +1028,7 @@ void searchType(){
 
     printf("1. Annual Claim Limit\n");
     printf("2. Lifetime Claim Limit\n");
-    printf("Enter claim limit: ");
+    printf("Enter claim limit (1 or 2): ");
     scanf(" %d", &type);
 
     // Checks whether the entered integer is a valid claim limit type or not.
@@ -1133,6 +1151,7 @@ void returnToMenu(){
     // Prompts user whether they want to go back to the main menu
     // or quit the program.
 
+    printf("------------------------------\n");
     printf("Return to menu?\n");
     printf("1. Yes\n");
     printf("2. No\n");
@@ -1145,7 +1164,7 @@ void returnToMenu(){
         menu();
     }
     else if (navHolder == 2){
-        exitMenu;
+        exitMenu();
     }
     else{
         printf("Wrong input, please try again\n");
