@@ -9,6 +9,7 @@ VOID menu(), accInfo(), accInfoA(), accInfoB(), subReg(), returnToMenu(), insCla
 FUNCTION main()
     menu()
     return 0
+ENDFUNCTION
 
 FUNCTION menu()
 
@@ -885,4 +886,6 @@ FUNCTION exitMenu
     return 0
 
 ENDFUNCTION
+
+END
     

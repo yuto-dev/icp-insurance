@@ -835,7 +835,7 @@ void actualSearch(int x){
         }
         count++;
     }
-    fclose(fyear);
+    fclose(fage);
 
     // Prints all data that was collected earlier.
 
