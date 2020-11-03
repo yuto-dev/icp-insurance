@@ -46,6 +46,7 @@ FUNCTION menu()
         PRINT "Wrong input, please try again"
         menu()
     ENDIF
+ENDFUNCTION
 
 FUNCTION subReg()
 
@@ -253,7 +254,7 @@ FUNCTION subReg()
     CLOSEFILE idwrite
 
     returnToMenu()
-
+    
 ENDFUNCTION
 
 FUNCTION insClaim()

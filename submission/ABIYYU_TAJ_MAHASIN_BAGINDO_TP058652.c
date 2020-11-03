@@ -277,6 +277,29 @@ void subReg(){
         }
     }
 
+    printf("------------------------------\n");
+    printf("Subscriber Record\n");
+    printf("ID: %d\n", nextid);
+    printf("Name: %s\n", name);
+    printf("Age: %d\n", age);
+    if (type == 1){
+        printf("Claim Limit Type: Annual\n");
+    }
+    else if (type == 2){
+        printf("Claim Limit Type: Lifetime\n");
+    }
+    if (plan == 1){
+        printf("Plan: Plan120\n");
+    }
+    else if (plan == 2){
+        printf("Plan: Plan150\n");
+    }
+    else if (plan == 3){
+        printf("Plan: Plan200\n");
+    }
+    printf("Balance left: %d\n", claimable);
+    printf("------------------------------\n");
+
     // Opens all the text files where subscriber data will be kept.
 
     FILE *fage = fopen("age.txt", "a");
